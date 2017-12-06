@@ -1,27 +1,36 @@
 'use strict';
 // Exporting the module
 export default function (selector) {
-	const newDom = function (selector) {
-		return new Constructor(elems);
-	};
-
 	const Constructor = function (selector) {
-		this.element = document.querySelector(selector);
+		this.element = document.querySelectorAll(selector);
+		this._temp_element = false;
+		this.isArray = false;
+
+		if (this.element.length > 1) {
+			this.isArray = true;
+		}
 
 		return this;
 	};
 
 	Constructor.prototype = {
-		hasClass: function (className) {
+		reset: function() {
+			if (this._temp_element !== false) {
+				this.element = this._temp_element;
+				this._temp_element = false;
+			}
+		},
+		checkClass: function (className, element) {
+			const elementHasClass = element || this.element[0];
 			// If no element or class name is parsed, we return (do nothing)
-			if (!this.element) {
+			if (!elementHasClass || !className) {
 				return false;
 			}
 
-			const classArray = this.element.className.split(' ');
-			const hasClass = classArray.indexOf(className);
+			const classArray = elementHasClass.className.split(' ');
+			const checkClass = classArray.indexOf(className);
 
-			if (hasClass >= 0) {
+			if (checkClass >= 0) {
 				return true;
 			}
 
@@ -35,20 +44,23 @@ export default function (selector) {
 
 			// Mechanism for adding the class.
 			const handleClass = cssClass => {
-				if (this.hasClass(cssClass)) {
-					return;
-				}
+				this.element.forEach( element => {
+					if (this.checkClass(cssClass, element)) {
+						return;
+					}
 
-				this.element.className += ' ' + cssClass;
+					element.className += ' ' + cssClass;
+				});
+				this.reset();
 			};
 
 			// Depending on the type we want to do this different.
-			if (typeof data === 'string') {
+			if (typeof data === 'string' && !this.isArray) {
 				handleClass(data);
 			} else {
 				data.forEach( cssClass => {
 					handleClass(cssClass);
-				})
+				});
 			}
 		},
 		removeClass: function (data) {
@@ -59,15 +71,18 @@ export default function (selector) {
 
 			// Mechanism for removing the class.
 			const handleClass = cssClass => {
-				if (this.hasClass(cssClass)) {
-					const classArray = this.element.className.split(' ');
-					const removeClass = classArray.indexOf(cssClass);
+				this.element.forEach( element => {
+					if (this.checkClass(cssClass, element)) {
+						const classArray = element.className.split(' ');
+						const removeClass = classArray.indexOf(cssClass);
 
-					if (removeClass >= 0) {
-						classArray.splice(removeClass, 1);
-						this.element.className = classArray.join(' ');
+						if (removeClass >= 0) {
+							classArray.splice(removeClass, 1);
+							element.className = classArray.join(' ');
+						}
 					}
-				}
+				});
+				this.reset();
 			}
 
 			// Depending on the type we want to do this different.
@@ -83,36 +98,70 @@ export default function (selector) {
 			const wrapper = document.createElement('div');
 			wrapper.innerHTML = templateString;
 
-			this.element.appendChild(wrapper.children[0]);
+			if (this.isArray) {
+				this.elements.forEach( element => {
+					element.appendChild(wrapper.children[0]);
+				});
+			} else {
+				this.element[0].appendChild(wrapper.children[0]);
+			}
+
+			this.reset();
 		},
 		classes: function () {
-			return this.element.className;
+			return this.element[0].className;
 		},
 		id: function (id) {
 			if (!id) {
-				return this.element.id;
+				return this.element[0].id;
 			}
 
-			this.element.id = id;
+			this.element[0].id = id;
+			this.reset();
 		},
 		data: function (name, value) {
 			if (!name) {
-				return this.element.dataset;
+				return this.element[0].dataset;
 			}
 
 			if (!value) {
-				return this.element.dataset[name];
+				return this.element[0].dataset[name];
 			}
 
-			this.element.dataset[name] = value;
+			this.element[0].dataset[name] = value;
+			this.reset();
 		},
-		find: function (element) {
-			return this.element.querySelector(element);
+		find: function (selector) {
+			if (!this.isArray) {
+				return this.element[0].querySelectorAll(selector);
+			}
+
+			let myElementsArray = [];
+
+			this.elements.forEach( element => {
+				const found = element.querySelectorAll(selector);
+
+				if (found) {
+					found.forEach( foundEle => {
+						myElementsArray.push(foundEle);
+					});
+				}
+			})
+
+			return myElementsArray;
+		},
+		findTo: function (selector) {
+			this._temp_element = this.element;
+			this.element = this.find(selector);
+
+			return this;
 		},
 		modify: function (callback) {
 			callback(this.element);
+			this.reset();
 		},
 		return: function() {
+			this.reset();
 			return this.element;
 		}
 	}
