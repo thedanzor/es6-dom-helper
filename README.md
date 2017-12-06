@@ -1,7 +1,7 @@
 ES6 / DOM assisting tool
 ===================
 
-This is a very simple module that makes it cleaner and easier to perform the more common DOM tasks such as:
+This is a very simple WIP module that makes it cleaner and easier to perform the more common DOM tasks such as:
 
 * Adding, Checking and Removing classes
 * Appending es6 Template strings to the DOM in a none brute-force manner (using appendChild)
@@ -12,15 +12,15 @@ This is a very simple module that makes it cleaner and easier to perform the mor
 
 This is done through the following methods:
 
-* .addClass() - Adds class(es) to an element, supports single or multiple values
-* .removeClass() - Removed class(es) from an element, supports single or multiple values
-* .checkClass() - Checks if element has a class
-* .data - Can return the dataset, a specific dataset or add a new data attribute
+* .addClass() - Adds class(es) to an element, supports single or an array of values
+* .removeClass() - Removed class(es) from an element, supports single or an array of values
+* .checkClass() - Checks if an element has the given class
+* .data - Can return the whole dataset, a specific dataset or add a new data attribute
 * .id() - Can return or assign an id
-* .classes() - Returns the classes of an element
+* .classes() - Returns the classes of an element (WIP)
 * .find() - Looks for child elements with matching criteria
-* .findTo() - Allows you to chain other methods after finding elements, such as adding, removing classes, data etc.
-* .modify() - Expects a callback method, but will pass the element in the argument of the callback. Giving you freedom to do anything else.
+* .findTo() - Allows you to chain other methods after finding the desired elements: such as adding, removing classes, data etc.
+* .modify() - Expects a callback method, but will give back the element in the argument of the callback. Giving you freedom to do anything else.
 * .return() - Returns the standard DOM element
 
 note: currently when using this utility, you cannot use regular DOM methods on the objects. unless using .find(), .modify() or .return() as these responses will return regular DOM objects.
@@ -84,9 +84,9 @@ ele('#my_wrapper').removeClass(['class1', 'class2']);
 ```
 
 
-## Checking for class
-You do not need to check if the class is there before adding or removing, when adding or removing a class the utility does that for you.
-However in a lot cases you want to check that a class exists on an element to check for state.
+## Checking for a class
+You do not need to check if the class is there before adding or removing, when adding or removing a class the utility does that for you to stop duplicates.
+This is more for when checking the DOM for a specific state.
 
 ```
 import ele from 'es6-dom-helper';
@@ -143,7 +143,7 @@ wrapper.data('state', 'active'); // Assigns a data attribute of state with the v
 ```
 
 ## Finding child element(s)
-This will return all instances of children with this selector.
+This will return all instances of children with the given selector.
 
 ```
 import ele from 'es6-dom-helper';
@@ -156,7 +156,7 @@ const firstDiv = wrapper.find('div'); // Returns first instance of this element.
 ```
 
 ## Finding child element(s) to modify
-This allows you to find child elements to chain another method too, such as adding or removing a class.
+This allows you to find child elements and then chain another method too it, such as adding or removing a class.
 
 ```
 import ele from 'es6-dom-helper';

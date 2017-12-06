@@ -1,6 +1,6 @@
 {
 	"name": "es6-dom-helper",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "Simple dom assistant that supports es6 features",
 	"main": "src/index.js",
 	"keywords": [
