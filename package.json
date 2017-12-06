@@ -1,8 +1,20 @@
 {
 	"name": "es6-dom-helper",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Simple dom assistant that supports es6 features",
 	"main": "src/index.js",
+	"keywords": [
+		"DOM",
+		"Class Manager",
+		"es6",
+		"babel",
+		"Utility",
+		"class",
+		"manager",
+		"lookup",
+		"lightweight",
+		"beta"
+	],
 	"scripts": {
 		"test": " ava --verbose"
 	},
