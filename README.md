@@ -23,7 +23,7 @@ This is done through the following methods:
 * .modify() - Expects a callback method, but will pass the element in the argument of the callback. Giving you freedom to do anything else.
 * .return() - Returns the standard DOM element
 
-note: currently when using this method, you cannot use regular DOM methods on these objects. unless using .find(), .modify() or .return() as these responses will be regular DOM objects.
+note: currently when using this utility, you cannot use regular DOM methods on the objects. unless using .find(), .modify() or .return() as these responses will return regular DOM objects.
 
 Examples
 ===================

@@ -1,6 +1,6 @@
 {
 	"name": "es6-dom-helper",
-	"version": "0.0.1",
+	"version": "0.1.4",
 	"description": "Simple dom assistant that supports es6 features",
 	"main": "src/index.js",
 	"scripts": {
@@ -19,9 +19,13 @@
 			}
 		}
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/thedanzor/es6-dom-helper"
+	},
 	"author": "Scott Jones <sjones243@gmail.com>",
-	"homepage": "https://the-danzor.deviantart.com",
-	"private": true,
+	"homepage": "http://the-danzor.deviantart.com",
+	"private": false,
 	"devDependencies": {
 		"autoprefixer": "^7.1.2",
 		"ava": "^0.20.0",
